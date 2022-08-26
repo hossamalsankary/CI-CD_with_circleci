@@ -1,4 +1,6 @@
 {
+  "class-validator": "0.12.2",
+"standard-version": "^7.0.0",
   "name": "glee2",
   "version": "1.0.0",
   "description": "This is just a test.",
