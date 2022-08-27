@@ -184,7 +184,7 @@ jobs:
             # Your code here
 
             sudo pip3 install --upgrade pip
-            pip install ansible
+            pip3 install ansible
             ansible --version
       - run:
           name: Configure server
