@@ -160,7 +160,7 @@ jobs:
             # Your code here
                
                aws ec2 describe-instances   --query 'Reservations[*].Instances[*].PublicIpAddress' 
-             --output text >> ansible/inventory.txt
+             --output text >> inventory.txt
 
              pwd
 
