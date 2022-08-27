@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
   aws-cli: circleci/aws-cli@2.0.3
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 # commands:
 #   # destroy-environment:
 #   #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -170,26 +171,30 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
 
-  #   configure-infrastructure:
-  #     docker:
-  #       # Docker image here that supports Ansible
-  #     steps:
-  #       # Checkout code from git
-  #       # Add ssh keys with fingerprint
-  #       # attach workspace
-  #       - run:
-  #           name: Install dependencies
-  #           command: |
-  #             # Your code here
-  #             exit 1
-  #       - run:
-  #           name: Configure server
-  #           command: |
-  #             # Your code here
-  #             exit 1
-  #       # Here's where you will add some code to rollback on failure
+  configure-infrastructure:
+    docker:
+      - image: circleci/python:3.6.2
+      # Docker image here that supports Ansible
+    steps:
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            # Your code here
+            sudo apt update
+            python3 -m pip -V
+            python3 -m pip install --user ansible
+            python3 -m pip install --upgrade --user ansible
+            ansible --version
+      - run:
+          name: Configure server
+          command: |
+            # Your code here
+            exit 1
+        # Here's where you will add some code to rollback on failure
 
-  #   run-migrations:
   #     docker:
   #       # Docker image here that supports NodeJS
   #     steps:
@@ -314,12 +319,12 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-      - deploy-infrastructure
-        # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # - deploy-infrastructure
+      # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # #     filters:
       #       branches:
       #         only: [test-feature-branch]
-      # - configure-infrastructure:
+      - configure-infrastructure
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
