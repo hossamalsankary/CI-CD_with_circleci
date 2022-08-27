@@ -182,10 +182,12 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-
-            sudo pip3 install --upgrade pip
-            pip3 install ansible
-            ansible --version
+            python3 -m venv env
+            . env/bin/activate
+            pip install ansible
+            pip install -r requirements.txt
+            sudo apt update
+            sudo apt install rsync
       - run:
           name: Configure server
           command: |
