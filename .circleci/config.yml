@@ -182,10 +182,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            sudo apt update
-            python3 -m pip -V
-            python3 -m pip install --user ansible
-            python3 -m pip install --upgrade --user ansible
+                        pip install ansible
             ansible --version
       - run:
           name: Configure server
