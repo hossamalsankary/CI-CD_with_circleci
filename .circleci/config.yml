@@ -160,8 +160,6 @@ jobs:
             aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=*" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
 
-            makdir ~/hello
-
       - run:
           name: Install tar utility
           command: |
@@ -184,8 +182,8 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - attach_workspace:
-          at: ~/hello
-      - run: ls ~/hello
+          at: ~/
+      - run: ls ~/inventory.txt
 
       - run:
           name: Install dependencies
