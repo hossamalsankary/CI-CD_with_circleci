@@ -186,7 +186,7 @@ jobs:
       - run:
           name: move file to inventory file
           command: |
-            cat inventory.txt > project/.circleci/ansible/inventory.txt
+            cat inventory.txt
 
       - run:
           name: Install dependencies
