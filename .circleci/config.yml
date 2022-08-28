@@ -184,12 +184,12 @@ jobs:
             # Your code here
             python3 -m pip -V
 
-      - run:
-          name: Configure server
-          command: |
-            # Your code here
-            exit 1
-        # Here's where you will add some code to rollback on failure
+      # - run:
+      #     name: Configure server
+      #     command: |
+      #       # Your code here
+      #       exit 1
+      # Here's where you will add some code to rollback on failure
 
   #     docker:
   #       # Docker image here that supports NodeJS
