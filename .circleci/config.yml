@@ -183,7 +183,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run: ls
+      - run: ls ~/
 
       - run:
           name: Install dependencies
