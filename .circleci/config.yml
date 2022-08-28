@@ -182,7 +182,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            python3 get-pip.py --user
+            python3 -m pip -V
 
       - run:
           name: Configure server
