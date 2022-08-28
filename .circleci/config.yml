@@ -183,10 +183,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run:
-          name: move file to inventory file
-          command: |
-            cat inventory.txt
+      - run: cat inventory.txt > project/.circleci/ansible/inventory.txt
 
       - run:
           name: Install dependencies
@@ -316,18 +313,18 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - deploy-infrastructure:
-      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
       #       branches:
       #         only: [test-feature-branch]
