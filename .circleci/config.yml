@@ -160,6 +160,8 @@ jobs:
             aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=*" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
 
+            makdir ~/hello
+
       - run:
           name: Install tar utility
           command: |
@@ -182,8 +184,8 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - attach_workspace:
-          at: ~/
-      - run: cat  ~/inventory.txt
+          at: ~/hello
+      - run: ls ~/hello
 
       - run:
           name: Install dependencies
@@ -330,8 +332,8 @@ workflows:
       # #     filters:
       #       branches:
       #         only: [test-feature-branch]
-      - configure-infrastructure
-        # requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
