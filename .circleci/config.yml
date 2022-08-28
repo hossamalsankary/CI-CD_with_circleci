@@ -182,8 +182,8 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - attach_workspace:
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/inventory.txt
+          at: ~/
+      - run: cat  inventory.txt
 
       - run:
           name: Install dependencies
