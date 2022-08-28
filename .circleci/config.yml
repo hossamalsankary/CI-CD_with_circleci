@@ -182,6 +182,8 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
+            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+            python3 get-pip.py --user
             python3 -m pip -V
 
       # - run:
