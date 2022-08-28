@@ -187,10 +187,10 @@ jobs:
       - run:
           name: Configure server
           command: |
+            ls >ls
+            cat ls
             pwd
-            cd ~/project/.circleci/ansible
-             pwd
-            #  ansible-playbook -i inventory.txt configure-server.yml
+          #  ansible-playbook -i inventory.txt configure-server.yml
       #Here's where you will add some code to rollback on failure
 
   #     docker:
