@@ -176,21 +176,21 @@ jobs:
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
           name: Install dependencies
           command: |
             # Your code here
-             apk add --update ansible
+            apk add --update ansible
 
       - run:
           name: Configure server
           command: |
-            ls -a
-            watch ls -a
-
-          # ansible-playbook -i .circleci/ansible/inventory.txt  .circleci/ansible/configure-server.yml
+            ls
+            cd .circleci/ansible
+             ansible-playbook -i inventory.txt configure-server.yml
       #Here's where you will add some code to rollback on failure
 
   #     docker:
