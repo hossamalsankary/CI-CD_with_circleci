@@ -172,7 +172,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: circleci/python:3.8.4
+      - image: python:3.7-alpine3.11
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
@@ -182,15 +182,12 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-            python3 get-pip.py --user
-            python3 -m pip -V
-            python3 -m pip install --user ansible
-            ansible --version
+            apk add --update ansible
 
       - run:
           name: Configure server
           command: |
+            ls
             cd .circleci/ansible
              ansible-playbook -i inventory.txt configure-server.yml
       #Here's where you will add some code to rollback on failure
