@@ -166,7 +166,7 @@ jobs:
             yum install -y tar gzip
 
       - persist_to_workspace:
-          root: ~/
+          root: workspace
           paths:
             - project/.circleci/ansible/inventory.txt
 
@@ -182,8 +182,8 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - attach_workspace:
-          at: ~/
-      - run: cat ~/inventory.txt
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/inventory.txt
 
       - run:
           name: Install dependencies
