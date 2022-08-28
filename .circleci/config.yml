@@ -186,6 +186,7 @@ jobs:
             python3 get-pip.py --user
             python3 -m pip -V
             python3 -m pip install --user ansible
+            ansible --version
 
       # - run:
       #     name: Configure server
