@@ -181,10 +181,16 @@ jobs:
           fingerprints: [3a:97:62:66:7a:e2:45:bc:7d:42:35:01:d7:66:f6:7b]
       # Add ssh keys with fingerprint
       # attach workspace
-      - run: mkdir ~/test
+
       - attach_workspace:
-          at: ~/test
-      - run: ls ~/test
+          at: ~/
+
+      - run:
+          name: replace inventory file
+          command: |
+            cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
+
+            cat ~/project/.circleci/ansible/inventory.txt
 
       - run:
           name: Install dependencies
