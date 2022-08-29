@@ -259,43 +259,43 @@ jobs:
             # your code here
             aws s3 cp ./frontend/dist s3://udapeople-51fa95d/ --recursive
 
-    deploy-backend:
-      docker:
-        - image: python:3.7-alpine3.11
-          # Docker image here that supports Ansible
-      steps:
-        # Checkout code from git
-        # Add ssh keys with fingerprint
-        # attach workspace
-        - checkout
-        - attach_workspace:
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+        # Docker image here that supports Ansible
+    steps:
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - checkout
+      - attach_workspace:
           at: ~/
 
-        - add_ssh_keys:
-            fingerprints: ["3a:97:62:66:7a:e2:45:bc:7d:42:35:01:d7:66:f6:7b"]
+      - add_ssh_keys:
+          fingerprints: ["3a:97:62:66:7a:e2:45:bc:7d:42:35:01:d7:66:f6:7b"]
 
-        - run:
-            name: install Install dependencies
-            commands: |
-              apk add --update nodejs npm
-                apk add --update tar gzip
+      - run:
+          name: install Install dependencies
+          command: |
+            apk add --update nodejs npm
+            apk add --update tar gzip
 
-        - run:
-            name: update inventory file
-            command: |
-              cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
-               cat ~/project/.circleci/ansible/inventory.txt
-        - run:
-            name: Deploy backend
-            command: |
-              # your code here
-              cd backend
-              npm i
-              npm run build
-              cd ..
-              tar -C backend -czvf artifact.tar.gz .
-              ls
-        # Here's where you will add some code to rollback on failure
+      - run:
+          name: update inventory file
+          command: |
+            cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
+              cat ~/project/.circleci/ansible/inventory.txt
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            tar -C backend -czvf artifact.tar.gz .
+             ls
+      # Here's where you will add some code to rollback on failure
 
   #   smoke-test:
   #     docker:
