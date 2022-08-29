@@ -144,14 +144,14 @@ jobs:
             #   --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
             #   --tags project=udacity
 
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags project=hey \
-      #           --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
-      #           --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=hey \
+                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -231,26 +231,26 @@ jobs:
             fi
             # Here's where you will add some code to rollback on failure
 
-  #   deploy-frontend:
-  #     docker:
-  #       # Docker image here that supports AWS CLI
-  #     steps:
-  #       # Checkout code from git
-  #       - run:
-  #           name: Install dependencies
-  #           command: |
-  #             # your code here
-  #       - run:
-  #           name: Get backend url
-  #           command: |
-  #             # your code here
-  #             export API_URL="http://${BACKEND_IP}:3030"
-  #             echo "${API_URL}"
-  #       - run:
-  #           name: Deploy frontend objects
-  #           command: |
-  #             # your code here
-  #       # Here's where you will add some code to rollback on failure
+    # deploy-frontend:
+    #   docker:
+    #     # Docker image here that supports AWS CLI
+    #   steps:
+    #     # Checkout code from git
+    #     - run:
+    #         name: Install dependencies
+    #         command: |
+    #           # your code here
+    #     - run:
+    #         name: Get backend url
+    #         command: |
+    #           # your code here
+    #           export API_URL="http://${BACKEND_IP}:3030"
+    #           echo "${API_URL}"
+    #     - run:
+    #         name: Deploy frontend objects
+    #         command: |
+    #           # your code here
+    # Here's where you will add some code to rollback on failure
 
   #   deploy-backend:
   #     docker:
@@ -339,13 +339,13 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-      # - deploy-infrastructure
+      - deploy-infrastructure
       # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # #     filters:
       #       branches:
       #         only: [test-feature-branch]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       - run-migrations
         # requires: [configure-infrastructure]
       # - deploy-frontend:
