@@ -1,20 +1,13 @@
-## Deployment playbook goes here.
-# create web directory for my wep_server
 ---
 - name: Creates directory
   file:
     path: ~/web
     state: directory
 
-# - name: Copy back-end
-#   template:
-#     src: "files/artifact.tar"
-#     dest: "~/web"
-
 - name: Extract foo.tgz into /var/lib/foo
   unarchive:
     src: "tarartifact.tar.gz"
-    dest: "~/web"
+    dest: ~/web
 
 - name: Executing node
   shell: |

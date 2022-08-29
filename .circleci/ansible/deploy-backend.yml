@@ -20,4 +20,4 @@
     - ansible_stdout_callback: yaml
 
   roles:
-    - deploy
+    - deploy_backend
