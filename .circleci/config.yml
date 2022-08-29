@@ -286,12 +286,17 @@ jobs:
             cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
               cat ~/project/.circleci/ansible/inventory.txt
       - run:
-          name: Deploy backend
+          name: build backend
           command: |
-            # your code here
             cd backend
-            npm i
+            npm install
             npm run build
+
+      - run:
+          name: run zip the back-end
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt deploy-backend.yml
             cd ..
             tar -C backend -czvf artifact.tar.gz .
             cp artifact.tar   .circleci/ansible/roles/deploy/files/
