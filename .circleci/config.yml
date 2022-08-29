@@ -279,6 +279,7 @@ jobs:
           command: |
             apk add --update nodejs npm
             apk add --update tar gzip
+            apk add --update ansible
 
       - run:
           name: update inventory file
