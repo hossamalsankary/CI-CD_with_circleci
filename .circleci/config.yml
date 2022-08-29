@@ -240,18 +240,24 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            yum install nodejs
       - run:
           name: Get backend url
           command: |
             # your code here
-            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output)
-            export API_URL="http://${DNS_NAME}:3030"
-            echo "${API_URL}"
+            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+            echo API_URL="http://${DNS_NAME}:3030" 
+            echo "http://${DNS_NAME}:3030" > frontend/.env
+            cat frontend/.env
+            npm install
+            npm run build
       - run:
           name: Deploy frontend objects
           command: |
             # your code here
-            Here's where you will add some code to rollback on failure
+            aws s3 cp ./frontend/dist s3://	udapeople-51fa95d/ --recursive
+      - destroy-aws-resource
+      - slack/status
 
   #   deploy-backend:
   #     docker:z
