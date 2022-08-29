@@ -134,24 +134,24 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - checkout
-      - run:
-          name: Ensure back-end infrastructure exists
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-              --tags project=udacity
+      # - checkout
+      # - run:
+      #     name: Ensure back-end infrastructure exists
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/backend.yml \
+      #         --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+      #         --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+      #         --tags project=udacity
 
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --tags project=hey \
-                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
-                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      # - run:
+      #     name: Ensure front-end infrastructure exist
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/frontend.yml \
+      #         --tags project=hey \
+      #           --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
+      #           --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -367,7 +367,7 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-      # - deploy-infrastructure
+      - deploy-infrastructure
       # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # #     filters:
       #       branches:
