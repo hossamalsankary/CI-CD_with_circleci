@@ -277,9 +277,9 @@ jobs:
       - run:
           name: install Install dependencies
           command: |
-            apk add --update nodejs npm
-            apk add --update tar gzip
-            apk add --update ansible
+            # apk add --update nodejs npm
+            # apk add --update tar gzip
+            # apk add --update ansible
 
       - run:
           name: update inventory file
@@ -290,16 +290,17 @@ jobs:
           name: build backend
           command: |
             cd backend
-            npm install
-            npm run build
+            # npm install
+            # npm run build
 
       - run:
           name: run zip the back-end
           command: |
+            cd ~/project
             ls
-            tar -C backend -czvf artifact.tar.gz .
-            cp artifact.tar   .circleci/ansible/roles/deploy/files/
-            ls circleci/ansible/roles/deploy/files/
+            # tar -C backend -czvf artifact.tar.gz .
+            # cp artifact.tar   .circleci/ansible/roles/deploy/files/
+            # ls circleci/ansible/roles/deploy/files/
       - run:
           name: run ansible
           command: |
