@@ -299,8 +299,8 @@ jobs:
             # cd ~/project
 
             # tar -C backend -czvf artifact.tar.gz .
-            # ls
-             cp README.tar.xz  "~/project/.circleci/ansible/roles/deploy/files/"
+             ls
+             cp README.tar.xz  .circleci/ansible/roles/deploy/files/
             ls circleci/anscpible/roles/deploy/files
       - run:
           name: run ansible
