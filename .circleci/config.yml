@@ -244,7 +244,7 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export DNS_NAME = $(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:project,Values=*" --output text)
+            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:project,Values=*" --output text)
 
             export API_URL="http://${DNS_NAME}:3030"
             echo "${API_URL}"
