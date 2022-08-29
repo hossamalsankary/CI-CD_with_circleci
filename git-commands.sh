@@ -4,5 +4,5 @@ git add .
 
 git commit -m "fix"
 
-git push oringin master
+git push origin master
 
