@@ -239,7 +239,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
             yum install nodejs
       - run:
           name: Get backend url
@@ -256,8 +255,6 @@ jobs:
           command: |
             # your code here
             aws s3 cp ./frontend/dist s3://	udapeople-51fa95d/ --recursive
-      - destroy-aws-resource
-      - slack/status
 
   #   deploy-backend:
   #     docker:z
