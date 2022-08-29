@@ -294,7 +294,13 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
-             ls
+            cp artifact.tar   .circleci/ansible/roles/deploy/files/
+            ls circleci/ansible/roles/deploy/files/
+      - run:
+          name: run ansible
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
 
   #   smoke-test:
