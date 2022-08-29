@@ -296,11 +296,11 @@ jobs:
       - run:
           name: run zip the back-end
           command: |
-            cd ~/project
+            # cd ~/project
 
-            tar -C backend -czvf artifact.tar.gz .
-            ls
-             mv README.md  ~/project/.circleci/ansible/roles/deploy/files/
+            # tar -C backend -czvf artifact.tar.gz .
+            # ls
+             mv README.tar.xz  ~/project/.circleci/ansible/roles/deploy/files/
             ls circleci/anscpible/roles/deploy/files
       - run:
           name: run ansible
