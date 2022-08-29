@@ -247,9 +247,10 @@ jobs:
           command: |
             # your code here
             export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
-            echo API_URL="http://${DNS_NAME}:3030" 
+            echo "http://${DNS_NAME}:3030" 
             echo "http://${DNS_NAME}:3030" > frontend/.env
             cat frontend/.env
+            cd frontend
             npm install
             npm run build
       - run:
