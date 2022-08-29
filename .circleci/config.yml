@@ -248,7 +248,7 @@ jobs:
             # your code here
             export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
             echo "http://${DNS_NAME}:3030" 
-            echo "http://${DNS_NAME}:3030" > frontend/.env
+            echo API_URL="http://${DNS_NAME}:3030" >> frontend/.env
             cat frontend/.env
             cd frontend
             npm install
@@ -257,7 +257,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
-            aws s3 cp ./frontend/dist s3://	udapeople-51fa95d/ --recursive
+            aws s3 cp ./frontend/dist s3://udapeople-51fa95d/ --recursive
 
   #   deploy-backend:
   #     docker:z
