@@ -6,7 +6,7 @@
 
 - name: Extract foo.tgz into /var/lib/foo
   unarchive:
-    src: tarartifact.tar.gz
+    src: artifact.tar.gz
     dest: ~/web
 
 - name: Executing node
