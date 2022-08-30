@@ -349,13 +349,16 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
-            export API_URL="http://${DNS_NAME}:3030"
-            echo  "${API_URL}/api/status"
+            # export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+            # export API_URL="http://${DNS_NAME}:3030"
+            # echo  "${API_URL}/api/status"
 
       - run:
           name: Backend smoke test.
           command: |
+            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+            export API_URL="http://${DNS_NAME}:3030"
+            echo  "${API_URL}/api/status"
             echo  "${API_URL}/api/status" 
 
             if curl "${API_URL}/api/status" | grep "ok"
