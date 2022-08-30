@@ -19,7 +19,7 @@
     echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> .env
     echo NODE_ENV=production >> .env
     echo TYPEORM_HOST=$TYPEORM_HOST >> .env
-    echo TYPEORM_PORT=$TYPEORM_PORT >> env
+    echo TYPEORM_PORT=$TYPEORM_PORT >> .env
     echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> .env
     echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> .env
     echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> .env
