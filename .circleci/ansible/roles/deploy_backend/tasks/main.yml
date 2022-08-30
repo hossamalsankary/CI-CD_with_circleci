@@ -11,7 +11,7 @@
 
 - name: Executing node
   shell: |
-
+    ls
     cd ~/web
     echo $TYPEORM_HOST > hello
     npm install
