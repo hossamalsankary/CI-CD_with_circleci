@@ -354,15 +354,14 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            echo $BACKEND_UR
-            ls
+            echo  "${API_URL}/api/status" 
 
-             if curl "${API_URL}/api/status" | grep "ok"
-             then
-                 exit 0
-             else
-                 exit 1
-             fi
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                exit 0
+            else
+                exit 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
