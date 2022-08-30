@@ -349,14 +349,14 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_URL=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+            export BACKEND_URL="http://$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text):3030"
 
       - run:
           name: Backend smoke test.
           command: |
-            echo ${BACKEND_UR}
+            echo $BACKEND_UR
 
-             if curl "http://${BACKEND_UR}:3030/api/status" | grep "ok"
+             if curl "${BACKEND_UR}/api/status" | grep "ok"
              then
                  exit 0
              else
