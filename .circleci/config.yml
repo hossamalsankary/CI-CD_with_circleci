@@ -346,20 +346,13 @@ jobs:
           command: |
             pip3 install awscli
             apk add --update curl
-      - run:
-          name: Get backend url
-          command: |
-            # export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
-            # export API_URL="http://${DNS_NAME}:3030"
-            # echo  "${API_URL}/api/status"
 
       - run:
           name: Backend smoke test.
           command: |
-            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+            export DNS_NAME=$(aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
             export API_URL="http://${DNS_NAME}:3030"
             echo  "${API_URL}/api/status"
-            echo  "${API_URL}/api/status" 
 
             if curl "${API_URL}/api/status" | grep "ok"
             then
@@ -419,31 +412,31 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [master]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      - smoke-test
+        # requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
