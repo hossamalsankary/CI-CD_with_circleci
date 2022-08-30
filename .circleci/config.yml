@@ -335,44 +335,44 @@ jobs:
 
       # Here's where you will add some code to rollback on failure
 
-    smoke-test:
-      docker:
-        - image: python:3.7-alpine3.11
-      steps:
-        # Checkout code from git
-        - checkout
-        - run:
-            name: Install dependencies
-            command: |
-              pip3 install awscli
-              apk add --update curl
-        - run:
-            name: Get backend url
-            command: |
-              export BACKEND_URL=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
+  smoke-test:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install awscli
+            apk add --update curl
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_URL=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
 
-        - run:
-            name: Backend smoke test.
-            command: |
+      - run:
+          name: Backend smoke test.
+          command: |
 
-              if curl "${BACKEND_UR}L/api/status" | grep "ok"
-              then
+            if curl "${BACKEND_UR}L/api/status" | grep "ok"
+            then
+                exit 0
+            else
+                exit 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
+                echo ${URL}
+                if curl -s ${URL} | grep "Welcome"
+                then
+                    # Change this to 0 after the job fails
                   exit 0
-              else
+                else
                   exit 1
-              fi
-        - run:
-            name: Frontend smoke test.
-            command: |
-              URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
-                  echo ${URL}
-                  if curl -s ${URL} | grep "Welcome"
-                  then
-                      # Change this to 0 after the job fails
-                    exit 0
-                  else
-                    exit 1
-                  fi
+                fi
         # Here's where you will add some code to rollback on failure
 
       # Here's where you will add some code to rollback on failure
