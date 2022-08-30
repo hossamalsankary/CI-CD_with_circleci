@@ -356,7 +356,7 @@ jobs:
           command: |
             echo ${BACKEND_UR}
 
-             if curl "http://${BACKEND_UR}/api/status" | grep "ok"
+             if curl "http://${BACKEND_UR}:3030/api/status" | grep "ok"
              then
                  exit 0
              else
