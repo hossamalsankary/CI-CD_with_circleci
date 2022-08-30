@@ -6,14 +6,13 @@
 
 - name: Extract foo.tgz into /var/lib/foo
   unarchive:
-    src: artifact.tar.gz
-    dest: ~/web
+    src: "tarartifact.tar.gz"
+    dest: "~/web"
 
 - name: Executing node
   shell: |
-    ls
-    cd ~/web/backend
-    ls
+    cd ~/web
+
     npm install
-     pm2 stop default
-     pm2 start npm -- start
+    pm2 stop default
+    pm2 start npm -- start

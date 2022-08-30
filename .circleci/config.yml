@@ -297,6 +297,7 @@ jobs:
           name: run zip the back-end
           command: |
             cd backend
+            printenv > .env
             npm install
             npm run build  
             cd ..
