@@ -16,7 +16,7 @@ Please watch the [video walkthrough of preparing AWS here](https://www.youtube.c
 At the very end of the pipeline, you will need to make a switch from the old infrastructure to the new as you learned about with the Blue Green Deployment strategy. We will use CloudFormation and CloudFront to accomplish this. However, for this to work, you must do a few things manually:
 
 1) Create a random string (e.g. `kk1j287dhjppmz437`) for use in next steps.
-2) Create an S3 Bucket with a name that combines "udapeople" and the random string (e.g. "udapeople-kk1j287dhjppmz437"). If S3 complains that the name is already taken, just choose another random string. The random string is to distinguish your bucket from other student buckets.
+2) Create an S3 Bucket with a name that combines "cdond-c3-project" and the random string (e.g. "cdond-c3-project-kk1j287dhjppmz437"). If S3 complains that the name is already taken, just choose another random string. The random string is to distinguish your bucket from other student buckets.
 3) Run our provided [Cloud Formation](https://github.com/udacity/cdond-c3-projectstarter/blob/master/.circleci/files/cloudfront.yml) template locally (for the Workflow ID parameter, use your random string).
 
 Once that is done, subsequent executions of that template will modify the same CloudFront distribution to make the blue-to-green switch without fail.
@@ -47,7 +47,7 @@ _NOTE:_ Some AWS-related jobs may take awhile to complete. If a job takes too lo
 
 #### 1. Infrastructure Phase
 
-Setting up servers and infrastructure is complicated business. There are many, many moving parts and points of failure. The opportunity for failure is massive when all that infrastructure is handled manually by human beings. Let’s face it. We’re pretty horrible at consistency. That’s why UdaPeople adopted the IaC (“Infrastructure as Code”) philosophy after “Developer Dave” got back from the last DevOps conference. We’ll need a job that executes some CloudFormation templates so that the UdaPeople team never has to worry about a missed deployment checklist item.
+Setting up servers and infrastructure is complicated business. There are many, many moving parts and points of failure. The opportunity for failure is massive when all that infrastructure is handled manually by human beings. Let’s face it. We’re pretty horrible at consistency. That’s why cdond-c3-project adopted the IaC (“Infrastructure as Code”) philosophy after “Developer Dave” got back from the last DevOps conference. We’ll need a job that executes some CloudFormation templates so that the cdond-c3-project team never has to worry about a missed deployment checklist item.
 
 In this phase, you will add CircleCI jobs that execute Cloud Formation templates that create infrastructure as well as jobs that execute Ansible Playbooks to configure that newly created infrastructure.
 
@@ -101,7 +101,7 @@ In this phase, you will add CircleCI jobs that execute Cloud Formation templates
 
 #### 2. Deploy Phase
 
-Now that the infrastructure is up and running, it’s time to configure for dependencies and move our application files over. UdaPeople used to have this ops guy in the other building to make the copy every Friday, but now they want to make a full deploy on every single commit. Luckily for UdaPeople, you’re about to add a job that handles this automatically using Ansible. The ops guy will finally have enough time to catch up on his Netflix playlist.
+Now that the infrastructure is up and running, it’s time to configure for dependencies and move our application files over. cdond-c3-project used to have this ops guy in the other building to make the copy every Friday, but now they want to make a full deploy on every single commit. Luckily for cdond-c3-project, you’re about to add a job that handles this automatically using Ansible. The ops guy will finally have enough time to catch up on his Netflix playlist.
 
 ##### Database migrations
 
@@ -137,7 +137,7 @@ Now that the infrastructure is up and running, it’s time to configure for depe
 
 #### 3. Smoke Test Phase
 
-All this automated deployment stuff is great, but what if there’s something we didn’t plan for that made it through to production? What if the UdaPeople website is now down due to a runtime bug that our unit tests didn’t catch? Users won’t be able to access their data! This same situation can happen with manual deployments, too. In a manual deployment situation, what’s the first thing you do after you finish deploying? You do a “smoke test” by going to the site and making sure you can still log in or navigate around. You might do a quick `curl` on the backend to make sure it is responding. In an automated scenario, you can do the same thing through code. Let’s add a job to provide the UdaPeople team with a little sanity check.
+All this automated deployment stuff is great, but what if there’s something we didn’t plan for that made it through to production? What if the cdond-c3-project website is now down due to a runtime bug that our unit tests didn’t catch? Users won’t be able to access their data! This same situation can happen with manual deployments, too. In a manual deployment situation, what’s the first thing you do after you finish deploying? You do a “smoke test” by going to the site and making sure you can still log in or navigate around. You might do a quick `curl` on the backend to make sure it is responding. In an automated scenario, you can do the same thing through code. Let’s add a job to provide the cdond-c3-project team with a little sanity check.
 
 - Find the job named `smoke-test` in your config file.
   - Select a lightweight Docker image like one of the Alpine images.
@@ -148,7 +148,7 @@ All this automated deployment stuff is great, but what if there’s something we
       - Use `curl` to hit the back-end API's status endpoint (e.g. https://1.2.3.4:3000/api/status)
       - No errors mean a successful test
     - Test the front-end
-      - Form the front-end url using the workflow id and your AWS region like this: `URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"` 
+      - Form the front-end url using the workflow id and your AWS region like this: `URL="http://cdond-c3-project-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"` 
       - Check the front-end to make sure it includes a word or two that proves it is working properly.
       - No errors mean a successful test
       ```bash
@@ -166,7 +166,7 @@ All this automated deployment stuff is great, but what if there’s something we
 
 #### 4. Rollback Phase
 
-Of course, we all hope every pipeline follows the “happy path.” But any experienced UdaPeople developer knows that it’s not always the case. If the smoke test fails, what should we do? The smart thing would be to hit CTRL-Z and undo all our changes. But is it really that easy? It will be once you build the next job!
+Of course, we all hope every pipeline follows the “happy path.” But any experienced cdond-c3-project developer knows that it’s not always the case. If the smoke test fails, what should we do? The smart thing would be to hit CTRL-Z and undo all our changes. But is it really that easy? It will be once you build the next job!
 
 - At the top of your config file, create a “[command](https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands)” named `destroy-environment` to remove infrastructure if something goes wrong
   - Trigger rollback jobs if the smoke tests or any following jobs fail. 
@@ -184,7 +184,7 @@ Of course, we all hope every pipeline follows the “happy path.” But any expe
 
 #### 5. Promotion Phase
 
-Assuming the smoke test came back clean, we should have a relatively high level of confidence that our deployment was a 99% success. Now’s time for the last 1%. UdaPeople uses the “Blue-Green Deployment Strategy” which means we deployed a second environment or stack next to our existing production stack. Now that we’re sure everything is "A-okay", we can switch from blue to green. 
+Assuming the smoke test came back clean, we should have a relatively high level of confidence that our deployment was a 99% success. Now’s time for the last 1%. cdond-c3-project uses the “Blue-Green Deployment Strategy” which means we deployed a second environment or stack next to our existing production stack. Now that we’re sure everything is "A-okay", we can switch from blue to green. 
 
 - Find the job named `cloudfront-update` in your config file.
   - Select a docker image that is compatible with AWS CLI.
@@ -200,7 +200,7 @@ Assuming the smoke test came back clean, we should have a relatively high level 
 
 #### 6. Cleanup Phase
 
-The UdaPeople finance department likes it when your AWS bills are more or less the same as last month OR trending downward. But, what if all this “Blue-Green” is leaving behind a trail of dead-end production environments? That upward trend probably means no Christmas bonus for the dev team. Let’s make sure everyone at UdaPeople has a Merry Christmas by adding a job to clean up old stacks.
+The cdond-c3-project finance department likes it when your AWS bills are more or less the same as last month OR trending downward. But, what if all this “Blue-Green” is leaving behind a trail of dead-end production environments? That upward trend probably means no Christmas bonus for the dev team. Let’s make sure everyone at cdond-c3-project has a Merry Christmas by adding a job to clean up old stacks.
 
 - Find the job named `cleanup` in your config file.
   - Write code that deletes the previous S3 bucket and EC2 instance. 
@@ -213,8 +213,8 @@ The UdaPeople finance department likes it when your AWS bills are more or less t
           --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
     ```
     - Remove old stacks/files
-      - Back-end stack (example: `aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"`)
-      - Front-end files in S3 (example: `aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive`)
+      - Back-end stack (example: `aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"`)
+      - Front-end files in S3 (example: `aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive`)
       - Front-end stack
 - Provide a screenshot of the successful job. **[SCREENSHOT09]**
 

@@ -2,7 +2,7 @@
 
 ### Circle CI
 
-Circle CI is only one of many options for CI/CD tools. It is a “software as a service” and has a [free account](https://circleci.com/signup/?source-button=free) that you can use throughout this project, which is ideal for UdaPeople since it’s a start-up running on a shoestring budget!
+Circle CI is only one of many options for CI/CD tools. It is a “software as a service” and has a [free account](https://circleci.com/signup/?source-button=free) that you can use throughout this project, which is ideal for cdond-c3-project since it’s a start-up running on a shoestring budget!
 
 1. [Create an account](https://circleci.com/signup/?source-button=free) with circleci.com if you haven't already. We recommend the free tier for this course. It includes 2500 credits per week which equals around 70 builds. This should be enough as long as you are conservative with your builds. _If you run out of credits, you can create another account and continue working._
 2. Create a new project in Circle CI using your GitHub repo.
@@ -21,7 +21,7 @@ Throughout this project, you will be asked to take screenshots or provide URLs t
 
 #### 1. Build Phase
 
-The goal of a build phase is to compile or lint the source code to check for syntax errors or unintentional typos in code. It’s your first line of defense against bugs as you attempt to integrate the pieces of your project together. This is especially important to UdaPeople because we don’t want to waste credits or time running other steps if the code can’t even compile.
+The goal of a build phase is to compile or lint the source code to check for syntax errors or unintentional typos in code. It’s your first line of defense against bugs as you attempt to integrate the pieces of your project together. This is especially important to cdond-c3-project because we don’t want to waste credits or time running other steps if the code can’t even compile.
 
 - Find the job named `build-frontend` in the `.circleci/config.yml` file. 
   - Add code to build/compile the front-end.
@@ -39,7 +39,7 @@ The goal of a build phase is to compile or lint the source code to check for syn
 
 #### 2. Test Phase
 
-Unit tests are one of the many very important building blocks of a system that enables Continuous Delivery (notice, we didn’t say “the only or most important thing”). UdaPeople believes that tests should come first just like they do in the scientific method. So, if a test fails, it's because the code is no longer trustworthy. Only trustworthy code should get a ticket to continue the ride!
+Unit tests are one of the many very important building blocks of a system that enables Continuous Delivery (notice, we didn’t say “the only or most important thing”). cdond-c3-project believes that tests should come first just like they do in the scientific method. So, if a test fails, it's because the code is no longer trustworthy. Only trustworthy code should get a ticket to continue the ride!
 
 - Find the jobs named `test-frontend` and `test-backend` in the config file. 
   - For both jobs, select a Docker image that is compatible with NodeJS.
@@ -52,7 +52,7 @@ Unit tests are one of the many very important building blocks of a system that e
 
 #### 3. Analyze Phase
 
-UdaPeople handles some private information like social security numbers, salary amount, etc. It would be a shame if a package with a known vulnerability left a security hole in our application, giving hackers access to that information! That’s why we should include a job that checks for known vulnerabilities every time we check in new code.
+cdond-c3-project handles some private information like social security numbers, salary amount, etc. It would be a shame if a package with a known vulnerability left a security hole in our application, giving hackers access to that information! That’s why we should include a job that checks for known vulnerabilities every time we check in new code.
 
 - Find the jobs named `scan-frontend` and `scan-backend` in the config file. 
   - For both jobs, select a Docker image that is compatible with NodeJS.
@@ -71,7 +71,7 @@ npm audit fix --audit-level=critical --force
 
 #### 4. Alerts
 
-When a build fails for any reason, the UdaPeople dev team needs to know about it. That way they can jump in and save the day (the day that they almost ruined by checking in bad code… but we digress). We’re going to add an alert so that botched builds raise a nice wavy red flag.
+When a build fails for any reason, the cdond-c3-project dev team needs to know about it. That way they can jump in and save the day (the day that they almost ruined by checking in bad code… but we digress). We’re going to add an alert so that botched builds raise a nice wavy red flag.
 
 - Integrate Slack, email or another communication tool to receive alerts when jobs fail. Our examples are using Slack, but you should feel free to use the communication tool to which you are most accustomed.
 - Alerts should include a summary of what happened and a link to the job console output for quick troubleshooting.
