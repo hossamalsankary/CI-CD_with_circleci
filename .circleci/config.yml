@@ -4,19 +4,21 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.3
 commands:
   destroy-environment:
-    description: Destroy back-end and front-end cloudformation
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
-      ID:
-        default: ${CIRCLE_WORKFLOW_ID:0:7}
+      # Add parameter here
+      Workflow_ID:
         type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
     steps:
       - run:
-          name: echo "Hello <<parameters.to>>"
+          name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack  --stack-name udapeople-backend-<<parameters.ID>>
-            aws s3 rm s3://udapeople-<<ID>> --recursive
-            aws cloudformation delete-stack  --stack-name udapeople-frontend-<<parameters.ID>>
+            # Your code here
+            aws cloudformation delete-stack --stack-name cdond-c3-project-backend-<< parameters.Workflow_ID >>
+            aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
+            aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
 
   # destroy-environment:
   #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -155,7 +157,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "cdond-c3-project-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udacity
 
@@ -165,7 +167,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=hey \
-                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
+                --stack-name "cdond-c3-project-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
@@ -291,7 +293,7 @@ jobs:
             rm -rf node_modules
             npm install
             npm run build
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://cdond-c3-project-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
   deploy-backend:
     docker:
@@ -385,7 +387,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
+            URL="http://cdond-c3-project-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
                 echo ${URL}
                 if curl -s ${URL} | grep "Welcome"
                 then
