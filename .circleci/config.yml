@@ -16,9 +16,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+
             aws cloudformation delete-stack --stack-name cdond-c3-project-backend-<< parameters.Workflow_ID >>
             aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
@@ -217,6 +215,13 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
+               apk add --no-cache \
+                python3 \
+                py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+                awscli \
+            && rm -rf /var/cache/apk/*
              cat .circleci/ansible/inventory.txt
 
             apk add --update ansible
@@ -298,6 +303,7 @@ jobs:
             npm install
             npm run build
             aws s3 cp dist s3://cdond-c3-project-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - destroy-environment
 
   deploy-backend:
     docker:
@@ -320,6 +326,13 @@ jobs:
             apk add --update nodejs npm
             apk add --update tar gzip
             apk add --update ansible
+            apk add --no-cache \
+                python3 \
+                py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+                awscli \
+            && rm -rf /var/cache/apk/*
 
       - run:
           name: update inventory file
@@ -370,8 +383,14 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip3 install awscli
-            apk add --update curl
+            apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+             && pip3 install \
+            awscli \
+            && rm -rf /var/cache/apk/*
+             apk add --update curl
 
       - run:
           name: Backend smoke test.
