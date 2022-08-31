@@ -16,6 +16,9 @@ commands:
           when: on_fail
           command: |
             # Your code here
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
             aws cloudformation delete-stack --stack-name cdond-c3-project-backend-<< parameters.Workflow_ID >>
             aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
