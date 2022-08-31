@@ -175,7 +175,7 @@ jobs:
           command: |
             pwd
             aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=*" --output text >> .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inveny.txt
+            cat .circleci/ansible/inventory.txt
 
       - run:
           name: Install tar utility
