@@ -208,6 +208,7 @@ jobs:
             cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
 
             cat ~/project/.circleci/ansible/inventory.txt
+            exit 1
 
       - run:
           name: Install dependencies
