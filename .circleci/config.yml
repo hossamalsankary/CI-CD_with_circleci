@@ -284,6 +284,8 @@ jobs:
           name: Install dependencies
           command: |
             yum install curl
+            yum install -y tar gzip
+
             curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
             yum -y install nodejs
       - run:
