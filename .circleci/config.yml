@@ -33,18 +33,6 @@ commands:
             aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
 
-  # destroy-environment:
-  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-  #   parameters:
-  #     # Add parameter here
-  #   steps:
-  #     - run:
-  #         name: Destroy environments
-  #         when: on_fail
-  #         command: |
-  #           # Your code here
-  #           exit 1
-
 #   # revert-migrations:
 #   description: Revert the last migration if successfully run in the current workflow.
 #   parameters:
@@ -232,7 +220,6 @@ jobs:
             cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
 
             cat ~/project/.circleci/ansible/inventory.txt
-            exit 1
 
       - run:
           name: Install dependencies
