@@ -290,9 +290,9 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export DNS_NAME=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicDnsName' --filters 'Name=tag:project,Values=*' --output text)
-            echo "http://${DNS_NAME}:3030" 
-            echo API_URL="http://${DNS_NAME}:3030" >> frontend/.env
+            export Back_End_IP=$(aws ec2 describe-instances      --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:project,Values=*' --output text)
+            echo "http://${Back_End_IP}:3030" 
+            echo API_URL="http://${Back_End_IP}:3030" >> frontend/.env
             cat frontend/.env
             cd frontend
             npm install
@@ -301,10 +301,10 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
-            cd frontend
-            rm -rf node_modules
+             cd frontend
             npm install
             npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://cdond-c3-project-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
 
@@ -435,24 +435,33 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
-  # cleanup:
-  #     docker:
-  #       # Docker image here
-  #     steps:
-  #       # Checkout code from git
-  #       - run:
-  #           name: Get old stack workflow id
-  #           command: |
-  #             # your code here
-  #             export OldWorkflowID="the id here"
-  #             export STACKS=[] #put the list of stacks here
-  #       - run:
-  #           name: Remove old stacks and files
-  #           command: |
-  #             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-  #             then
-  #               # your code here
-  #             fi
+  cleanup:
+    docker:
+      - image: amazon/aws-cli
+    working_directory: ~/project
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Get old stacks
+          command: |
+            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text) #put the list of stacks here
+            for id in $STACKS
+            do
+                if [[ $id != *$CIRCLE_WORKFLOW_ID ]]  # If cloudfront stack is not current deployment
+                then
+                    if [[ $id == "my-frontend-stack-"* ]]  # If stack is FE then empty the bucket first
+                    then
+                        echo "Deleting s3 bucket content for $id"
+                        export workflowidID=${id#"my-frontend-stack-"}
+                        aws s3 rm --recursive s3://cdond-c3-project-$workflowidID
+                    fi
+                    echo "Deleting $id"
+                    aws cloudformation delete-stack --stack-name $id
+                else
+                    echo "Skipping $id"
+                fi
+            done
 
 workflows:
   default:
@@ -484,5 +493,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
