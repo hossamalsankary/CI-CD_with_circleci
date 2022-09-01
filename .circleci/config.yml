@@ -2,6 +2,8 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
   aws-cli: circleci/aws-cli@2.0.3
+
+# main parameters for the whole script
 parameters:
   docker_awsCli:
     type: string
@@ -18,7 +20,6 @@ commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
-      # Add parameter here
       Workflow_ID:
         type: string
         default: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -440,10 +441,8 @@ jobs:
   cleanup:
     docker:
       - image: amazon/aws-cli
-    working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       - run:
           name: Get old stacks
           command: |
@@ -468,16 +467,16 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
       - deploy-infrastructure:
           # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
@@ -495,5 +494,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
