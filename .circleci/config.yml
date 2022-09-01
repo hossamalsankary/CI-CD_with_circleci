@@ -2,6 +2,18 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
   aws-cli: circleci/aws-cli@2.0.3
+parameters:
+  docker_awsCli:
+    type: string
+    default: docker_awsCli
+
+  docker_ansible:
+    type: string
+    default: python:3.7-alpine3.11
+
+  docker_nodejs:
+    type: string
+    default: circleci/node:14.8.0
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -55,7 +67,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
       - restore_cache:
@@ -72,7 +84,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
       - restore_cache:
@@ -89,7 +101,7 @@ jobs:
   #
   test-frontend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
       - restore_cache:
@@ -105,7 +117,7 @@ jobs:
 
   test-backend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
       - restore_cache:
@@ -121,7 +133,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
 
@@ -136,7 +148,7 @@ jobs:
       # Your job code here
   scan-backend:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       - checkout
 
@@ -150,7 +162,7 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: << pipeline.parameters.docker_awsCli >>
     steps:
       - checkout
       - run:
@@ -167,7 +179,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=hey \
+              --tags project=udacity \
                 --stack-name "cdond-c3-project-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -192,7 +204,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: << pipeline.parameters.docker_ansible >>
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
@@ -202,6 +214,17 @@ jobs:
 
       - attach_workspace:
           at: ~/
+      - run:
+          name: install awscli to excute rolleback coreectry
+          command: |
+            apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+            awscli \
+            && rm -rf /var/cache/apk/*
+            cat .circleci/ansible/inventory.txt
 
       - run:
           name: replace inventory file
@@ -215,14 +238,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-               apk add --no-cache \
-                python3 \
-                py3-pip \
-            && pip3 install --upgrade pip \
-            && pip3 install \
-                awscli \
-            && rm -rf /var/cache/apk/*
-             cat .circleci/ansible/inventory.txt
+
 
             apk add --update ansible
 
@@ -237,7 +253,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:14.8.0
+      - image: << pipeline.parameters.docker_nodejs >>
     steps:
       # Checkout code from git
       - checkout
@@ -274,7 +290,7 @@ jobs:
       - destroy-environment
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: << pipeline.parameters.docker_awsCli >>
     steps:
       - checkout
       - run:
@@ -307,7 +323,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: << pipeline.parameters.docker_ansible >>
         # Docker image here that supports Ansible
     steps:
       # Checkout code from git
@@ -350,17 +366,6 @@ jobs:
           name: run zip the back-end
           command: |
             cd backend
-                # echo ENVIRONMENT=production > "backend/.env"
-                # echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-                # echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
-                # echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-                # echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-                # echo NODE_ENV=production >> "backend/.env"
-                # echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-                # echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-                # echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-                # echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-                # echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             npm install
             npm run build  
             cd ..
@@ -376,7 +381,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: << pipeline.parameters.docker_ansible >>
     steps:
       # Checkout code from git
       - checkout
@@ -423,20 +428,25 @@ jobs:
       - destroy-environment
 
       # Here's where you will add some code to rollback on failure
-  #   cloudfront-update:
-  #     docker:
-  #       # Docker image here that supports AWS CLI
-  #     steps:
-  #       # Checkout code from git
-  #       - run:
-  #           name: Install dependencies
-  #           command: |
-  #             # your code here
-  #       - run:
-  #           name: Update cloudfront distribution
-  #           command: |
-  #             # your code here
-  #       # Here's where you will add some code to rollback on failure
+  cloudfront-update:
+    docker:
+      - image: << pipeline.parameters.docker_awsCli >>
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name InitialStack \
+             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+            --tags project=udacity
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment
 
   # cleanup:
   #     docker:
@@ -485,7 +495,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
+      - cloudfront-update:
+          requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
