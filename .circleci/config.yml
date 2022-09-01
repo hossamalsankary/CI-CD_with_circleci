@@ -5,7 +5,7 @@ orbs:
 parameters:
   docker_awsCli:
     type: string
-    default: docker_awsCli
+    default: amazon/aws-cli
 
   docker_ansible:
     type: string
