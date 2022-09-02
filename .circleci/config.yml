@@ -30,9 +30,9 @@ commands:
           command: |
             # Your code here
 
-            # aws cloudformation delete-stack --stack-name cdond-c3-project-backend-<< parameters.Workflow_ID >>
-            # aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
-            # aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
+            aws cloudformation delete-stack --stack-name cdond-c3-project-backend-<< parameters.Workflow_ID >>
+            aws s3 rm s3://cdond-c3-project-<<parameters.Workflow_ID>> --recursive
+            aws cloudformation delete-stack --stack-name cdond-c3-project-frontend-<< parameters.Workflow_ID >>
 
 #   # revert-migrations:
 #   description: Revert the last migration if successfully run in the current workflow.
