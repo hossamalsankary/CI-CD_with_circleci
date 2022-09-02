@@ -149,6 +149,7 @@ jobs:
             cd backend
              npm install
 
+  # -------------------------------------------deploy-infrastructure----------------------------
   deploy-infrastructure:
     docker:
       - image: << pipeline.parameters.docker_awsCli >>
@@ -158,8 +159,8 @@ jobs:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
               --stack-name "cdond-c3-project-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --template-file .circleci/files/backend.yml \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udacity
 
@@ -167,9 +168,9 @@ jobs:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
+                --stack-name "cdond-c3-project-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
               --template-file .circleci/files/frontend.yml \
               --tags project=udacity \
-                --stack-name "cdond-c3-project-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
@@ -180,8 +181,10 @@ jobs:
             cat .circleci/ansible/inventory.txt
 
       - run:
+          #  install tar for persist_to_workspace
           name: Install tar utility
           command: |
+
             yum install -y tar gzip
 
       - persist_to_workspace:
@@ -203,6 +206,7 @@ jobs:
 
       - attach_workspace:
           at: ~/
+
       - run:
           name: install awscli to excute rolleback coreectry
           command: |
@@ -213,10 +217,9 @@ jobs:
             && pip3 install \
             awscli \
             && rm -rf /var/cache/apk/*
-            cat .circleci/ansible/inventory.txt
 
       - run:
-          name: replace inventory file
+          name: fill inventory file with es2 IP
           command: |
             cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
 
@@ -225,17 +228,14 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # Your code here
-
-
             apk add --update ansible
-
       - run:
           name: Configure server
           command: |
-            ls
+
             cd .circleci/ansible
              ansible-playbook -i inventory.txt configure-server.yml
+
       #Here's where you will add some code to rollback on failure
       - destroy-environment
 
