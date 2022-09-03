@@ -45,6 +45,10 @@ async function bootstrap() {
       }
     },
   };
+  app.use(cors({
+    origin: '*',
+        methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
   app.use(cors(corsOptions));
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(config.PORT);

@@ -443,24 +443,24 @@ jobs:
       - run:
           name: Get old stacks
           command: |
-            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text) #put the list of stacks here
-            for id in $STACKS
-            do
-                if [[ $id != *$CIRCLE_WORKFLOW_ID ]]  # If cloudfront stack is not current deployment
-                then
-                    if [[ $id == "my-frontend-stack-"* ]]  # If stack is FE then empty the bucket first
-                    then
-                        echo "Deleting s3 bucket content for $id"
-                        export workflowidID=${id#"my-frontend-stack-"}
-                        aws s3 rm --recursive s3://cdond-c3-project-$workflowidID
-                    fi
-                    echo "Deleting $id"
-                    aws cloudformation delete-stack --stack-name $id
-                else
-                    echo "Skipping $id"
-                fi
-            done
-
+            # Fetch the Old workflow ID
+            export OldWorkflowID=$(aws cloudformation \
+                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                    --no-paginate --output text)
+            echo OldWorkflowID: "${OldWorkflowID}"
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+            # Fetch the stack names          
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            echo Stack names: "${STACKS[@]}" 
+            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
+            then
+            aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive
+            aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
+            aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
+            else
+              echo it`s ok we good
+            fi
 workflows:
   default:
     jobs:
