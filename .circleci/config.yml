@@ -74,7 +74,6 @@ jobs:
           key: frontend-build
 
       - slack/notify:
-          channel: ABCXYZ
           event: fail
           template: basic_fail_1
   build-backend:
