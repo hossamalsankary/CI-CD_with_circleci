@@ -427,15 +427,15 @@ jobs:
           name: Install dependencies
           command: |
             # save wocloudfront-${CIRCLE_WORKFLOW_ID:0:7}rkflowID
-            curl -k -d '${CIRCLE_WORKFLOW_ID:0:7}' https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
+            curl -k -d ${CIRCLE_WORKFLOW_ID:0:7} https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
       - run:
           name: Update cloudfront distribution
           command: |
-            aws cloudformation deploy \
-            --template-file .circleci/files/cloudfront.yml \
-            --stack-name  cloudfront-${CIRCLE_WORKFLOW_ID:0:7}\
-             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-            --tags project=udacity
+            # aws cloudformation deploy \
+            # --template-file .circleci/files/cloudfront.yml \
+            # --stack-name  cloudfront-${CIRCLE_WORKFLOW_ID:0:7}\
+            #  --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+            # --tags project=udacity
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
@@ -498,7 +498,7 @@ workflows:
       #     requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update
+      - cloudfront-update
       # requires: [smoke-test]
-      - cleanup
-        # requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
