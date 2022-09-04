@@ -423,11 +423,7 @@ jobs:
       - image: << pipeline.parameters.docker_awsCli >>
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            # save wocloudfront-${CIRCLE_WORKFLOW_ID:0:7}rkflowID
-            curl -k -d ${CIRCLE_WORKFLOW_ID:0:7} https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
+
       - run:
           name: Update cloudfront distribution
           command: |
@@ -463,12 +459,17 @@ jobs:
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
                 echo " we are clear >"
+                
+                curl -k -d ${CIRCLE_WORKFLOW_ID:0:7} https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
             else
 
                 aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive
                 aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name  "cloudfront-${OldWorkflowID}"
+
+                curl -k -d ${CIRCLE_WORKFLOW_ID:0:7} https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
+
             fi
 workflows:
   default:
