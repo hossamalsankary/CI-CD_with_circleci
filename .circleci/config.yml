@@ -469,9 +469,9 @@ jobs:
 
                 if[[$(aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive)]]
                 then
-                aws cloudformation delete-stack --stack-name  "cloudfront-${OldWorkflowID}"
+                   aws cloudformation delete-stack --stack-name  "cloudfront-${OldWorkflowID}"
                 else
-                  echo "we are clear"
+                    echo "we are clear"
 
 
             fi
