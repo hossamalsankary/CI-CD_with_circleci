@@ -250,7 +250,6 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            sudo apt update
             apt install curl
             cd backend
             echo ENVIRONMENT=production > .env
