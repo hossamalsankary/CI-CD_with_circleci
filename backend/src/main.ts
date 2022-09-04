@@ -18,6 +18,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
     logger,
   });
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   const apiVersionPrefix: string = process.env.API_VERSION || 'api';
   app.setGlobalPrefix(apiVersionPrefix);
@@ -34,16 +35,8 @@ async function bootstrap() {
   SwaggerModule.setup(`api/${apiVersionPrefix}`, app, document);
   const config: ConfigService = app.get('ConfigService');
   const whitelist = config.CORS_WHITELIST;
-  const corsOptions = {
-
-  credentials: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  origin:"*",
-  preflightContinue: false,
-
-  };
   
-  app.use(cors(corsOptions));
+  
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(config.PORT);
   logger.log(`Listening on port ${config.PORT}.`);

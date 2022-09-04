@@ -360,7 +360,7 @@ jobs:
             npm run build  
             cd ..
             cd  .circleci/ansible/roles/deploy_backend/files/
-            tar -C ../../../../../backend/dist -czvf artifact.tar.gz .
+            tar -C ../../../../../backend -czvf artifact.tar.gz .
             ls -a
             cd ~/project/.circleci/ansible
              cat inventory.txt
