@@ -250,7 +250,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            apt install curl
+            sudo  apt install curl
             cd backend
             echo ENVIRONMENT=production > .env
             echo TYPEORM_CONNECTION=postgres >> .env
