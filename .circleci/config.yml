@@ -467,7 +467,7 @@ jobs:
                 aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
 
-                if[[aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive]]
+                if[aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive]
                 then
                 aws cloudformation delete-stack --stack-name  "cloudfront-${OldWorkflowID}"
                 else
