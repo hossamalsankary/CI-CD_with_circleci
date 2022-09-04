@@ -466,7 +466,7 @@ jobs:
             aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
             aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
             else
-              echo it`s ok we good
+              echo its ok we good
             fi
 workflows:
   default:
