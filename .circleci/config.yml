@@ -462,7 +462,7 @@ jobs:
 
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
-                echo " we are clear"
+                echo " we are clear >"
             else
 
                 aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive
