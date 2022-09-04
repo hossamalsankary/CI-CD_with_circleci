@@ -426,13 +426,14 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            # save wocloudfront-${CIRCLE_WORKFLOW_ID:0:7}rkflowID
+            curl -k -d '${CIRCLE_WORKFLOW_ID:0:7}' https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow
       - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name cloudfront-${CIRCLE_WORKFLOW_ID:0:7} \
+            --stack-name  \
              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"  \
             --tags project=udacity
       # Here's where you will add some code to rollback on failure
@@ -448,9 +449,7 @@ jobs:
           name: Get old stacks
           command: |
             # Fetch the Old workflow ID  we export this workflow id from cloudformation cloudfront
-            export OldWorkflowID=$(aws cloudformation \
-                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                    --no-paginate --output text) 
+            export OldWorkflowID=$(curl https://kvdb.io/2iqx5HA6Vi2tNFsP86yURw/oldworkflow) 
 
 
             echo OldWorkflowID: "${OldWorkflowID}"
@@ -463,11 +462,13 @@ jobs:
 
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
             then
-            aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive
-            aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
-            aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
+                echo " we are clear"
             else
-              echo its ok we good
+
+                aws s3 rm "s3://cdond-c3-project-${OldWorkflowID}" --recursive
+                aws cloudformation delete-stack --stack-name "cdond-c3-project-backend-${OldWorkflowID}"
+                aws cloudformation delete-stack --stack-name "cdond-c3-project-frontend-${OldWorkflowID}"
+                aws cloudformation delete-stack --stack-name  "cloudfront-${CIRCLE_WORKFLOW_ID:0:7}"
             fi
 workflows:
   default:
@@ -482,22 +483,22 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-      - deploy-infrastructure:
-          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
+      # - deploy-infrastructure:
+      #     # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [master]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update
+      # requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
