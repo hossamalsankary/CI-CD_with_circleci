@@ -15,7 +15,7 @@ parameters:
 
   docker_nodejs:
     type: string
-    default: circleci/node:14.8.0
+    default: sleavely/node-awscli:14.x
 
 commands:
   destroy-environment:
