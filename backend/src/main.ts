@@ -18,7 +18,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
     logger,
   });
-  app.enableCors();
   
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   const apiVersionPrefix: string = process.env.API_VERSION || 'api';
@@ -31,13 +30,14 @@ async function bootstrap() {
   .addTag('customTag')
   .setBasePath(apiVersionPrefix)
   .addBearerAuth()// here is an intentional compile error. Remove the "x" and the backend should compile.
-    .build();
+  .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(`api/${apiVersionPrefix}`, app, document);
   const config: ConfigService = app.get('ConfigService');
   const whitelist = config.CORS_WHITELIST;
   
   
+  app.Cors();
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(config.PORT);
   logger.log(`Listening on port ${config.PORT}.`);
