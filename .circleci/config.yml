@@ -316,8 +316,8 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - checkout
-      # - attach_workspace:
-      #     at: ~/
+      - attach_workspace:
+          at: ~/
 
       - add_ssh_keys:
           fingerprints: ["3a:97:62:66:7a:e2:45:bc:7d:42:35:01:d7:66:f6:7b"]
@@ -336,11 +336,11 @@ jobs:
                 awscli \
             && rm -rf /var/cache/apk/*
 
-      # - run:
-      #     name: update inventory file
-      #     command: |
-      #       cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
-      #         cat ~/project/.circleci/ansible/inventory.txt
+      - run:
+          name: update inventory file
+          command: |
+            cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
+              cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: build backend
           command: |
@@ -361,6 +361,12 @@ jobs:
           command: |
             cd ~/project/
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
+
+      - run:
+          name: ansible-playbook
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt deploy-backend.yml
 
       # Here'tar -czf artifact.tar.gz dist/* package*s where you will add some code to rollback on failure
       - destroy-environment
