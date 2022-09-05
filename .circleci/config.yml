@@ -359,8 +359,8 @@ jobs:
       - run:
           name: cp artifact file
           command: |
-            cd .circleci
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
+            cd backend
+            cp artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
 
       # Here'tar -czf artifact.tar.gz dist/* package*s where you will add some code to rollback on failure
       - destroy-environment
