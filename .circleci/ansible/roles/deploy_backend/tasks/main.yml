@@ -11,7 +11,7 @@
 
 - name: Executing node
   shell: |
-    cd ~/web
+    cd ~/web/dist
     echo ENVIRONMENT=production > .env
     echo TYPEORM_CONNECTION=postgres >> .env
     echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> .env
