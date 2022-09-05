@@ -346,14 +346,11 @@ jobs:
           name: run zip the back-end
           command: |
             cd backend
-            npm run build  
-            cd ..
-            cd  .circleci/ansible/roles/deploy_backend/files/
-            tar -Czf ../../../../../backend/dist/* package* artifact.tar.gz .
-            ls -a
-            cd ~/project/.circleci/ansible
-             cat inventory.txt
-             ansible-playbook -i inventory.txt deploy-backend.yml
+            npm run build
+            cd backend
+            tar -czf artifact.tar.gz dist/* package*
+            cd .circleci
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
 
       # Here'tar -czf artifact.tar.gz dist/* package*s where you will add some code to rollback on failure
       - destroy-environment
