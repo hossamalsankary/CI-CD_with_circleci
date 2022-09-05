@@ -341,7 +341,8 @@ jobs:
             cd backend
             npm i
             npm run build
-             tar -czf artifact.tar.gz dist/* package*
+            tar -czf artifact dist/* package*
+            ls
 
       - run:
           name: cp artifact file
