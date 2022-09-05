@@ -351,8 +351,8 @@ jobs:
       - run:
           name: archive production files
           command: |
-            cd backend
-            tar -czf artifact.tar.gz dist/* package* 
+            cd ~/project/
+            tar -czf artifact.tar.gz backend/* 
 
             ls
 
@@ -360,7 +360,7 @@ jobs:
           name: cp artifact file
           command: |
             cd ~/project/
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
+            cp artifact.tar.gz .circleci/ansible/roles/deploy_backend/files
 
       - run:
           name: ansible-playbook
