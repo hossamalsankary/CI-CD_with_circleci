@@ -254,7 +254,6 @@ jobs:
             sudo  apt install curl
             cd backend
             npm install
-            npm audit fix
             echo ENVIRONMENT=production > .env
             echo TYPEORM_CONNECTION=postgres >> .env
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> .env
