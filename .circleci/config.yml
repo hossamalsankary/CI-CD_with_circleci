@@ -346,17 +346,16 @@ jobs:
           name: run zip the back-end
           command: |
             cd backend
-            npm install
             npm run build  
             cd ..
             cd  .circleci/ansible/roles/deploy_backend/files/
-            tar -C ../../../../../backend -czvf artifact.tar.gz .
+            tar -Czf ../../../../../backend/dist/* package* artifact.tar.gz .
             ls -a
             cd ~/project/.circleci/ansible
              cat inventory.txt
              ansible-playbook -i inventory.txt deploy-backend.yml
 
-      # Here's where you will add some code to rollback on failure
+      # Here'tar -czf artifact.tar.gz dist/* package*s where you will add some code to rollback on failure
       - destroy-environment
 
   smoke-test:
