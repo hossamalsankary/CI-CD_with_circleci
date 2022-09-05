@@ -431,7 +431,7 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name  cloudfront-${CIRCLE_WORKFLOW_ID:0:7}\
+            --stack-name  initializ\
              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"  \
             --tags project=udacity
       # Here's where you will add some code to rollback on failure
