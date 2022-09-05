@@ -37,7 +37,6 @@ async function bootstrap() {
   const whitelist = config.CORS_WHITELIST;
   
   
-  app.Cors();
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(config.PORT);
   logger.log(`Listening on port ${config.PORT}.`);
