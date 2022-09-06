@@ -165,6 +165,7 @@ jobs:
       - run:
           name: Ensure back-end infrastructure exists
           command: |
+            exit 1
             aws cloudformation deploy \
               --stack-name "cdond-c3-project-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --template-file .circleci/files/backend.yml \
