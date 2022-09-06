@@ -24,16 +24,6 @@ commands:
           event: fail
           channel: cicd-pipeline
           template: basic_fail_1
-
-  install_nodejs:
-    description: Install Node.js 13
-    steps:
-      - run:
-          name: Install Node.js 13
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-            sudo apt install -y nodejs
-
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -291,7 +281,6 @@ jobs:
       - image: << pipeline.parameters.docker_awsCli >>
     steps:
       - checkout
-      - install_nodejs
       - run:
           name: Install dependencies
           command: |
@@ -327,7 +316,6 @@ jobs:
       # Add ssh keys with fingerprint
       # attach worzkspace
       - checkout
-      - install_nodejs
       - attach_workspace:
           at: ~/
 
