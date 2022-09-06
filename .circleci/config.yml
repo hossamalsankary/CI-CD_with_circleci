@@ -341,13 +341,7 @@ jobs:
           command: |
             cat ~/inventory.txt >  ~/project/.circleci/ansible/inventory.txt
               cat ~/project/.circleci/ansible/inventory.txt
-      - run:
-          name: build backend
-          command: |
-            cd backend
-            npm i
-            npm run build
-            ls
+
       - run:
           name: archive production files
           command: |
