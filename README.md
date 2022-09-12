@@ -1,64 +1,26 @@
-We are archiving this repository because we do not want learners to push personal development to the current repository. If you have any issues or suggestions to make, feel free to:
-- Utilize the https://knowledge.udacity.com/ forum to seek help on content-specific issues.
-- [Submit a support ticket](https://udacity.zendesk.com/hc/en-us/requests/new) along with the link to your forked repository. 
-- If you are an enterprise learner, please [Submit a support ticket here](https://udacityenterprise.zendesk.com/hc/en-us/requests/new?ticket_form_id=360000279131)
+#Here some Images about the CD?CD
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/(Compile%20errors%20have%20been%20fixed.)(Unit%20tests%20have%20been%20fixed.)(All%20critical%20security%20vulnerabilities%20caught%20by%20the%20%E2%80%9CAnalyze%E2%80%9D%20job%20have%20been%20fixed.).png)
 
-## Give your Application Auto-Deploy Superpowers
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BSCREENSHOT07%5D%20.png)
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BSCREENSHOT08%5D.png)
 
-In this project, you will prove your mastery of the following learning objectives:
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BSCREENSHOT09%5D.png)
 
-- Explain the fundamentals and benefits of CI/CD to achieve, build, and deploy automation for cloud-based software products.
-- Utilize Deployment Strategies to design and build CI/CD pipelines that support Continuous Delivery processes.
-- Utilize a configuration management tool to accomplish deployment to cloud-based servers.
-- Surface critical server errors for diagnosis using centralized structured logging.
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BSCREENSHOT10%5D.png)
 
-![Diagram of CI/CD Pipeline we will be building.](cdond-c3-project.png)
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BSCREENSHOT12%5D.png)
 
-### Instructions
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/node_disk_written_bytes_total.png)
 
-* [Selling CI/CD](instructions/0-selling-cicd.md)
-* [Getting Started](instructions/1-getting-started.md)
-* [Deploying Working, Trustworthy Software](instructions/2-deploying-trustworthy-code.md)
-* [Configuration Management](instructions/3-configuration-management.md)
-* [Turn Errors into Sirens](instructions/4-turn-errors-into-sirens.md)
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/node_memory_MemFree_bytes.png)
 
-### Project Submission
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/node_cpu_seconds_total.png)
 
-For your submission, please submit the following:
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BURL04_SCREENSHOT%5D.png)
 
-- A text file named `urls.txt` including:
-  1. Public Url to GitHub repository (not private) [URL01]
-  1. Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
-  1. Public URL for your CloudFront distribution (aka, your blue production front-end) [URL03]
-  1. Public URLs to deployed application back-end in EC2 [URL04]
-  1. Public URL to your Prometheus Server [URL05]
-- Your screenshots in JPG or PNG format, named using the screenshot number listed in the instructions. These screenshots should be included in your code repository in the root folder.
-  1. Job failed because of compile errors. [SCREENSHOT01]
-  1. Job failed because of unit tests. [SCREENSHOT02]
-  1. Job that failed because of vulnerable packages. [SCREENSHOT03]
-  1. An alert from one of your failed builds. [SCREENSHOT04]
-  1. Appropriate job failure for infrastructure creation. [SCREENSHOT05]
-  1. Appropriate job failure for the smoke test job. [SCREENSHOT06]
-  1. Successful rollback after a failed smoke test. [SCREENSHOT07]  
-  1. Successful promotion job. [SCREENSHOT08]
-  1. Successful cleanup job. [SCREENSHOT09]
-  1. Only deploy on pushed to `master` branch. [SCREENSHOT10]
-  1. Provide a screenshot of a graph of your EC2 instance including available memory, available disk space, and CPU usage. [SCREENSHOT11]
-  1. Provide a screenshot of an alert that was sent by Prometheus. [SCREENSHOT12]
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BURL03_SCREENSHOT%5D.png)
 
-- Your presentation should be in PDF format named "presentation.pdf" and should be included in your code repository root folder. 
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/%5BURL03_SCREENSHOT%5D%20-%20Evidence%20of%20deployed%20and%20functioning%20front33%20application%20in%20CloudFront.%20%E2%9D%8C.png)
 
-Before you submit your project, please check your work against the project rubric. If you haven’t satisfied each criterion in the rubric, then revise your work so that you have met all the requirements. 
+![plot](https://github.com/hossamalsankary/cdond-c3-project_3/blob/master/images/Screenshot%20from%202022-09-06%2004-46-13.png)
 
-### Built With
-
-- [Circle CI](www.circleci.com) - Cloud-based CI/CD service
-- [Amazon AWS](https://aws.amazon.com/) - Cloud services
-- [AWS CLI](https://aws.amazon.com/cli/) - Command-line tool for AWS
-- [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastrcuture as code
-- [Ansible](https://www.ansible.com/) - Configuration management tool
-- [Prometheus](https://prometheus.io/) - Monitoring tool
-
-### License
-
-[License](LICENSE.md)
