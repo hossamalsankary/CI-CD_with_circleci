@@ -1,0 +1,13 @@
+[URL01]: https://github.com/hossamalsankary/cdond-c3-project_3
+
+[URL02]:http://cdond-c3-project-33665d4.s3-website-us-east-1.amazonaws.com
+
+[URL03_SCREENSHOT]:http://dewgxaxdbpk01.cloudfront.net/#/employees
+
+[URL04_SCREENSHOT]: curl ec2-44-204-89-240.compute-1.amazonaws.com:3030/api/status
+
+[URL05_SCREENSHOT]:http://ec2-54-147-8-142.compute-1.amazonaws.com:9090/alerts
+
+
+[URL05_SCREENSHOT] :http://ec2-54-147-8-142.compute-1.amazonaws.com:9093/#/alerts?silenced=false&inhibited=true&active=true
+
